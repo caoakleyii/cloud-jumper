@@ -11,6 +11,8 @@ import (
 	"github.com/caoakleyii/cloud-jumper/src/middleware"
 )
 
+// UseRoutes registers paths with the
+// proper handler funcs
 func UseRoutes(h *handler.APIHandler) {
 
 	h.Any("/shutdown", handler.Shutdown)
@@ -20,6 +22,8 @@ func UseRoutes(h *handler.APIHandler) {
 	h.Get("/stats", handler.GetStastics)
 }
 
+// UseMiddleware registerse any premiddleware
+// and middleware with the handler
 func UseMiddleware(h *handler.APIHandler) {
 	h.Pre(middleware.PreStatistics)
 	h.Use(middleware.Statistics)
@@ -36,7 +40,8 @@ func UseMiddleware(h *handler.APIHandler) {
 	and will defer the cancel for any existing child context,
 	after the shutdown returns.
 */
-// UseGracefulShutdown ...
+// UseGracefulShutdown shuts down the server
+// without interrupting any active connections
 func UseGracefulShutdown(s *http.Server) {
 	// create a channel, for an os signal, setup a notify
 	// to listen for a kill or interrupt signal
