@@ -30,7 +30,7 @@ func Sha512HashBase64Encode(value, salt string) string {
 	return base64.StdEncoding.EncodeToString(b[:])
 }
 
-// GenerateRandomString Creates a secure random string that is base64 encoded
+// GenerateRandomString Creates a secure random string that is base64 URL Encoded
 // Returns the string and nil or empty string and error
 func GenerateRandomString(n int) (string, error) {
 	b := make([]byte, n)
@@ -39,5 +39,5 @@ func GenerateRandomString(n int) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	return base64.StdEncoding.EncodeToString(b), err
+	return base64.URLEncoding.EncodeToString(b), err
 }

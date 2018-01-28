@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"net/http"
 	"os"
 )
 
@@ -29,7 +30,7 @@ func Shutdown(ctx *Context) {
 	p, err := os.FindProcess(pid)
 
 	if err != nil {
-		ctx.String(500, err.Error())
+		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -38,10 +39,10 @@ func Shutdown(ctx *Context) {
 	if err.Error() == "not supported by windows" {
 		CSignal <- os.Interrupt
 	} else if err != nil {
-		ctx.String(500, err.Error())
+		ctx.String(http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	ctx.String(200, "Shutting Down.")
+	ctx.String(http.StatusOK, "Shutting Down.")
 	return
 }

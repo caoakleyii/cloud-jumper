@@ -71,7 +71,7 @@ func (a APIHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			m, err := regexp.MatchString(k.Path, r.URL.Path)
 
 			if err != nil {
-				handler = func(ctx *Context) { ctx.String(500, "Internal Server Error") }
+				handler = func(ctx *Context) { ctx.String(http.StatusInternalServerError, "Internal Server Error") }
 			}
 
 			// if match, get the param value
@@ -86,7 +86,7 @@ func (a APIHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !ok {
-		handler = func(ctx *Context) { ctx.String(404, "Not Found") }
+		handler = func(ctx *Context) { ctx.String(http.StatusNotFound, "Not Found") }
 	} else {
 		handler = route.Handler
 	}

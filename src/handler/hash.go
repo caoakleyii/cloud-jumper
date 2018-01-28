@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/caoakleyii/cloud-jumper/src/cache"
@@ -34,13 +35,13 @@ func postPassword(ctx *Context) {
 	salt, err := hasher.GenerateRandomString(32)
 
 	if err != nil {
-		ctx.String(500, "Internal Server Error")
+		ctx.String(http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 
 	// Hash and Encode the password
 	p = hasher.Sha512HashBase64Encode(p, salt)
-	ctx.String(201, p)
+	ctx.String(http.StatusCreated, p)
 }
 
 /*
@@ -60,7 +61,7 @@ func PostPassword(ctx *Context) {
 
 	// Check "validation" the incoming password
 	if p == "" {
-		ctx.String(400, "Bad Request")
+		ctx.String(http.StatusBadRequest, "Bad Request")
 		return
 	}
 
@@ -68,7 +69,7 @@ func PostPassword(ctx *Context) {
 	salt, err := hasher.GenerateRandomString(32)
 
 	if err != nil {
-		ctx.String(500, "Internal Server Error")
+		ctx.String(http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 
@@ -76,7 +77,7 @@ func PostPassword(ctx *Context) {
 	id, err := hasher.GenerateRandomString(8)
 
 	if err != nil {
-		ctx.String(500, "Internal Server Error")
+		ctx.String(http.StatusInternalServerError, "Internal Server Error")
 		return
 	}
 
@@ -90,7 +91,7 @@ func PostPassword(ctx *Context) {
 	}(id, cache.InMemoryPasswordStorage)
 
 	// return 201 created with the id
-	ctx.String(201, id)
+	ctx.String(http.StatusCreated, id)
 	return
 }
 
@@ -109,10 +110,10 @@ func GetPassword(ctx *Context) {
 	p := cache.InMemoryPasswordStorage[id]
 
 	if p == "" {
-		ctx.String(404, "Password Not Found")
+		ctx.String(http.StatusNotFound, "Password Not Found")
 		return
 	}
 
-	ctx.String(200, p)
+	ctx.String(http.StatusOK, p)
 	return
 }
