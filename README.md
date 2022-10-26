@@ -1,5 +1,5 @@
 # Cloud Jumper
-A basic hashing API written with Golang.
+A basic Go API using only standard libraries to provide hasing functionalities. 
 
 ## Build & Run
 `go build`
